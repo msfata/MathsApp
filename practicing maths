@@ -1,0 +1,531 @@
+/**
+ * 
+ */
+package com.firstHP;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EmptyBorder;
+
+/**
+ * @author 44742
+ *
+ */
+public class MultiThreadFrame extends JFrame {
+
+	private JPanel contentPane;
+	private static JLabel first;
+	private JLabel second;
+	private JTextField answer;
+	private JLabel correct;
+	private JLabel wrong;
+	protected int counterCorrect = 1;
+	protected int uncorrectCounter = 1;
+	private static int speed;
+	private JButton btnEasy;
+	private JButton btnHard;
+	private JButton btnMid;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JButton b1;
+	private JButton b3;
+	private JButton b2;
+	private JLabel lblWrong;
+	private JLabel label_2;
+	private JLabel lblCorrect;
+	private JButton button_7;
+	private JButton button_8;
+	private JButton button_9;
+	protected String number;
+	private JButton button_10;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MultiThreadFrame frame = new MultiThreadFrame();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public MultiThreadFrame() {
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setBounds(0, 0, 1010, 686);
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int height = gd.getDisplayMode().getWidth();
+		int width = gd.getDisplayMode().getHeight();
+//		setBounds(0, 0, height, width);
+		setBounds(0, 0, 1280, 800);
+		contentPane = new JPanel();
+		contentPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				System.exit(0);
+			}
+		});
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new TitledBorder(
+				new CompoundBorder(new LineBorder(new Color(0, 0, 0), 5), new LineBorder(new Color(227, 227, 227), 15)),
+				"BY SHAHED FATA", TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM, null, new Color(0, 0, 0)));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JPanel panel = new JPanel();
+		panel.setBounds(65, 68, 1150, 252);
+		contentPane.add(panel);
+		panel.setLayout(new GridLayout(3, 0, 0, 0));
+
+		first = new JLabel();
+		first.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		panel.add(first);
+		first.setHorizontalAlignment(SwingConstants.CENTER);
+
+		JLabel label = new JLabel("+");
+		label.setFont(new Font("Dialog", Font.BOLD, 60));
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(label);
+
+		second = new JLabel();
+		second.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		second.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(second);
+
+		lblWrong = new JLabel();
+		lblWrong.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWrong.setFont(new Font("Tahoma", Font.BOLD, 18));
+		panel.add(lblWrong);
+
+		answer = new JTextField();
+		answer.setBackground(Color.WHITE);
+		answer.setBorder(null);
+		answer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				calculate();
+			}
+		});
+		answer.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		answer.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(answer);
+		answer.setColumns(10);
+
+		lblCorrect = new JLabel();
+		lblCorrect.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCorrect.setFont(new Font("Tahoma", Font.BOLD, 18));
+		panel.add(lblCorrect);
+
+		wrong = new JLabel();
+		wrong.setForeground(Color.RED);
+		wrong.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		wrong.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(wrong);
+
+		label_2 = new JLabel();
+		label_2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_2.setFont(new Font("DS-Digital", Font.PLAIN, 40));
+		panel.add(label_2);
+
+		correct = new JLabel();
+		correct.setForeground(Color.ORANGE);
+		correct.setFont(new Font("DS-Digital", Font.BOLD, 60));
+		correct.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(correct);
+
+		panel_1 = new JPanel();
+		panel_1.setBounds(676, 333, 539, 381);
+		contentPane.add(panel_1);
+		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+
+		btnEasy = new JButton("EASY");
+		btnEasy.setBorder(new LineBorder(Color.WHITE));
+		btnEasy.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnEasy.setForeground(Color.BLACK);
+		btnEasy.setBackground(Color.LIGHT_GRAY);
+		panel_1.add(btnEasy);
+
+		btnMid = new JButton("MEDIUM");
+		btnMid.setBorder(new LineBorder(Color.WHITE));
+		btnMid.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnMid.setForeground(Color.BLACK);
+		btnMid.setBackground(Color.LIGHT_GRAY);
+		panel_1.add(btnMid);
+
+		btnHard = new JButton("HARD");
+		btnHard.setBorder(new LineBorder(Color.WHITE));
+		btnHard.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnHard.setForeground(Color.BLACK);
+		btnHard.setBackground(Color.LIGHT_GRAY);
+		panel_1.add(btnHard);
+
+		panel_2 = new JPanel();
+		panel_2.setBounds(616, 333, 63, 381);
+		contentPane.add(panel_2);
+		panel_2.setLayout(new GridLayout(3, 0, 0, 0));
+
+		b1 = new JButton("");
+		b1.setBackground(Color.WHITE);
+		b1.setBorder(null);
+		panel_2.add(b1);
+
+		b2 = new JButton("");
+		b2.setBackground(Color.WHITE);
+		b2.setBorder(null);
+		panel_2.add(b2);
+
+		b3 = new JButton("");
+		b3.setBackground(Color.WHITE);
+		b3.setBorder(null);
+		panel_2.add(b3);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new EmptyBorder(4, 4, 4, 4));
+		panel_3.setBackground(Color.WHITE);
+		panel_3.setBounds(65, 333, 539, 381);
+		contentPane.add(panel_3);
+
+		JButton button_1 = new JButton("");
+		button_1.setBounds(1, 0, 134, 127);
+		button_1.setBorder(null);
+		button_1.setBackground(Color.WHITE);
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				try {
+					if (!number.equals(null)) {
+						number = number + 1;
+					}
+				} catch (Exception any) {
+					number = "1";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+
+		});
+		panel_3.setLayout(null);
+		button_1.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM1 - Copy.PNG")));
+		panel_3.add(button_1);
+
+		JButton button_3 = new JButton("");
+		button_3.setBounds(135, 0, 134, 127);
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 2;
+					}
+				} catch (Exception any) {
+					number = "2";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+
+		});
+		button_3.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM2 - Copy.png")));
+		button_3.setBorder(null);
+		button_3.setBackground(Color.WHITE);
+		panel_3.add(button_3);
+
+		JButton button_4 = new JButton("");
+		button_4.setBounds(269, 0, 134, 127);
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 3;
+					}
+				} catch (Exception any) {
+					number = "3";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+		});
+		button_4.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM3 - Copy.PNG")));
+		button_4.setBorder(null);
+		button_4.setBackground(Color.WHITE);
+		panel_3.add(button_4);
+
+		JButton button_5 = new JButton("");
+		button_5.setBounds(403, 0, 134, 127);
+		button_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 4;
+					}
+				} catch (Exception any) {
+					number = "4";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+		});
+		button_5.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM4 - Copy.png")));
+		button_5.setBorder(null);
+		button_5.setBackground(Color.WHITE);
+		panel_3.add(button_5);
+
+		button_8 = new JButton("");
+		button_8.setBounds(1, 127, 134, 127);
+		button_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 5;
+					}
+				} catch (Exception any) {
+					number = "5";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+		});
+		button_8.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM5 - Copy.png")));
+		button_8.setBorder(null);
+		button_8.setBackground(Color.WHITE);
+		panel_3.add(button_8);
+
+		JButton button_2 = new JButton("");
+		button_2.setBounds(135, 127, 134, 127);
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 6;
+					}
+				} catch (Exception any) {
+					number = "6";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+		});
+		button_2.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM6 - Copy.png")));
+		button_2.setBorder(null);
+		button_2.setBackground(Color.WHITE);
+		panel_3.add(button_2);
+
+		JButton button_6 = new JButton("");
+		button_6.setBounds(269, 127, 134, 127);
+		button_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 7;
+					}
+				} catch (Exception any) {
+					number = "7";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+		});
+		button_6.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM7 - Copy.png")));
+		button_6.setBorder(null);
+		button_6.setBackground(Color.WHITE);
+		panel_3.add(button_6);
+
+		JButton button = new JButton("");
+		button.setBounds(403, 127, 134, 127);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 8;
+					}
+				} catch (Exception any) {
+					number = "8";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+		});
+		button.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM8 - Copy.png")));
+		button.setBorder(null);
+		button.setBackground(Color.WHITE);
+		panel_3.add(button);
+
+		button_7 = new JButton("");
+		button_7.setBounds(1, 254, 134, 127);
+		button_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 9;
+					}
+				} catch (Exception any) {
+					number = "9";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+		});
+		button_7.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM9 - Copy.PNG")));
+		button_7.setBorder(null);
+		button_7.setBackground(Color.WHITE);
+		panel_3.add(button_7);
+
+		button_9 = new JButton("");
+		button_9.setBounds(135, 254, 134, 127);
+		button_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!number.equals(null)) {
+						number = number + 0;
+					}
+				} catch (Exception any) {
+					number = "0";
+				}
+
+				answer.setText(number);
+				answer.requestFocus();
+			}
+		});
+		button_9.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/NUM0.PNG - Copy.png")));
+		button_9.setBorder(null);
+		button_9.setBackground(Color.WHITE);
+		panel_3.add(button_9);
+
+		button_10 = new JButton("");
+		button_10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				calculate();
+			}
+		});
+		button_10.setBounds(269, 254, 268, 127);
+		button_10.setIcon(new ImageIcon(MultiThreadFrame.class.getResource("/controlButton/ENTER - Copy.PNG")));
+		button_10.setBorder(null);
+		button_10.setBackground(Color.WHITE);
+		panel_3.add(button_10);
+		setUndecorated(true);
+		setType(Type.UTILITY);
+		btnHard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				speed = 1000;
+				answer.requestFocus();
+				b3.setBackground(Color.RED);
+				b2.setBackground(Color.WHITE);
+				b1.setBackground(Color.WHITE);
+				//
+				startThread();
+				//
+			}
+		});
+		btnMid.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				speed = 7000;
+				answer.requestFocus();
+				b2.setBackground(Color.ORANGE);
+				b1.setBackground(Color.WHITE);
+				b3.setBackground(Color.WHITE);
+
+				//
+				startThread();
+				//
+			}
+		});
+		btnEasy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				speed = 10000;
+				answer.requestFocus();
+				b1.setBackground(Color.GREEN);
+				b2.setBackground(Color.WHITE);
+				b3.setBackground(Color.WHITE);
+
+				//
+                
+				
+				
+				startThread();
+				//
+
+			}
+		});
+
+	}
+
+	/**
+	 * 
+	 */
+	protected void calculate() {
+		try {
+			if (Integer.parseInt(first.getText()) + Integer.parseInt(second.getText()) == Integer
+					.parseInt(answer.getText())) {
+				correct.setText("" + counterCorrect++);
+			} else {
+				wrong.setText("" + uncorrectCounter++);
+			}
+			number = "";
+			answer.setText(null);
+		} catch (NumberFormatException e) {
+		}
+		answer.requestFocus();
+	}
+
+	/**
+	 * @throws InterruptedException
+	 * 
+	 */
+	protected void startThread() {
+		answer.requestFocus();
+		new Thread("fata"){
+
+			public void run() {
+				while (true) {
+					Random rand = new Random();
+					first.setText("" + rand.nextInt(101));
+					second.setText("" + rand.nextInt(101));
+					try {
+						Thread.sleep(speed);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+
+			}
+	
+		}.start();
+	}
+}
